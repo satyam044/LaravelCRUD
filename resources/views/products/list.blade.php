@@ -56,7 +56,11 @@
                             <td>{{\Carbon\Carbon::parse($product->created_at)->format('d M, Y')}}</td>
                             <td>
                                 <a href="{{route('products.edit',$product->id)}}" class="btn btn-dark">Edit</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
+                                <a href="#" onclick="deleteProduct({{$product->id}});" class="btn btn-danger">Delete</a>
+                                <form id="delete-product-from-{{$product->id}}" action="{{route('products.destroy',$product->id)}}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                </form>
                             </td>
                         </tr>
                         @endforeach
@@ -67,6 +71,12 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-  </body>
+    <script>
+        function deleteProduct(id){
+            if(confirm('Are you sure you want to DELETE this product?')){
+                document.getElementById("delete-product-from-"+id).submit();
+            }
+        }
+    </script>
+    </body>
 </html>

@@ -16,10 +16,12 @@ class ProductController extends Controller
             'products' => $products
         ]);
     }
+
     // Create Products page
     public function create(){
         return view('products.create');
     }
+
     // Store Products in DB
     public function store(Request $request){
         $rules = [
@@ -61,6 +63,7 @@ class ProductController extends Controller
     
         return redirect()->route('products.index')->with('success','Product Added Successfully!');
     }
+
     // Edit Product
     public function edit($id){
         $product = Product::findOrFail($id);
@@ -68,6 +71,7 @@ class ProductController extends Controller
             'product' => $product 
         ]);
     }
+
     // Update Product
     public function update($id, Request $request){
         $product = Product::findOrFail($id);
@@ -112,8 +116,17 @@ class ProductController extends Controller
         
             return redirect()->route('products.index')->with('success','Product Updated Successfully!');
     }
+
     // Delete Product
-    public function destroy(){
-        
+    public function destroy($id){
+        $product = Product::findOrFail($id);
+
+        //Delete Image
+        File::delete(public_path('uploads/products/'.$product->image));
+
+        //Delete product from DB
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success','Product Deleted Successfully!');
     }
 }
