@@ -10,7 +10,10 @@ class ProductController extends Controller
 {
     // Show Products page
     public function index(){
-        return view('products.list');
+        $products = Product::orderBy('created_at','DESC')->get();
+        return view('products.list',[
+            'products' => $products
+        ]);
     }
     // Create Products page
     public function create(){
